@@ -36,4 +36,4 @@ jobs:
         pipenv install --dev
     - name: Test with tox and pytest
       run: |
-        tox
+        pipenv run tox
