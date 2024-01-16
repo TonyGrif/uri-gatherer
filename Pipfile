@@ -9,6 +9,11 @@ name = "pypi"
 pytest = "*"
 pytest-cov = "*"
 tox = "*"
+black = "*"
+isort = "*"
+pylint = "*"
+ruff = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"
