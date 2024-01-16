@@ -1,2 +1,12 @@
-# uri-gatherer
-Script to gather unique URIs from the links found within a seed URI
+# URI Gatherer
+Python3 script to gather unique URIs from the links found within a seed URI.
+
+## Requirements
+TBW
+* [Python 3.X](https://www.python.org/)
+
+## Running Instructions
+TBW
+
+## Sample Execution
+TBW
