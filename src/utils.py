@@ -51,4 +51,4 @@ def extract_links(response: requests.Response) -> List[str]:
     for link in soup.find_all("a"):
         links.append(link["href"])
 
-    return links
+    return list(set(links))
