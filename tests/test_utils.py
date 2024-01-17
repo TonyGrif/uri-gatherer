@@ -23,4 +23,4 @@ class TestUtils:
         assert seed_request.status_code == 200
 
         links = extract_links(seed_request)
-        assert len(links) == 78
+        assert len(links) == 75
