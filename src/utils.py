@@ -46,6 +46,9 @@ def extract_links(response: requests.Response) -> List[str]:
         A list containing strings of unique URIs.
     """
     soup = BeautifulSoup(response.content, "html.parser")
-    links = soup.find_all("a")
+    links = []
+
+    for link in soup.find_all("a"):
+        links.append(link["href"])
 
     return links
