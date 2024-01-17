@@ -8,11 +8,8 @@ from typing import List
 
 import requests
 
-# TODO: Change to parameter and CLI optional argument
-TIMEOUT_TIME = 5
 
-
-def get_unique_uris(seed_uri: str, total_uri: int) -> List[str]:
+def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     """Get the unique URIs from the seed URI and recursively search them
     for more unique URIs until the upper bound has been hit or no more can
     be found.
@@ -20,11 +17,12 @@ def get_unique_uris(seed_uri: str, total_uri: int) -> List[str]:
     Parameters:
         seed_uri (str): The starting URI to make requests on.
         total_uri (int): The total number of unique URIs to search for.
+        time (int): The time before a HTTP request times out.
 
     Returns:
         A list containing strings of unique URIs.
     """
-    response = requests.get(seed_uri, timeout=TIMEOUT_TIME)
+    response = requests.get(seed_uri, timeout=time)
     # Ensure valid content type; If not ...
     links = extract_links(response)
     # Check if ready to return (collection >= total)
