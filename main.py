@@ -5,6 +5,8 @@
 import argparse
 import logging
 
+from src.utils import get_unique_uris
+
 
 def main():
     """Main driver of the URI Gatherer script."""
@@ -13,6 +15,14 @@ def main():
     )
 
     parser.add_argument("seed_uri", help="URI to scan for other unique URIs.")
+
+    parser.add_argument(
+        "unique_count",
+        nargs="?",
+        type=int,
+        default=500,
+        help="The number of unique URIs to find (default 500).",
+    )
 
     parser.add_argument(
         "-d",
@@ -25,6 +35,8 @@ def main():
 
     if args.debug is True:
         logging.basicConfig(level=logging.DEBUG)
+
+    get_unique_uris(args.seed_uri, args.unique_count)
 
 
 if __name__ == "__main__":
