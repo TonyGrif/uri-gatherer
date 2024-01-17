@@ -1,12 +1,13 @@
 import pytest
 import requests
 
-from src.utils import get_unique_uris, extract_links
+from src.utils import extract_links, get_unique_uris
 
 
 @pytest.fixture
 def seed_uri():
     return "https://weiglemc.github.io/"
+
 
 @pytest.fixture
 def seed_request(seed_uri):
@@ -16,7 +17,10 @@ def seed_request(seed_uri):
 class TestUtils:
     def test_get_uris(self, seed_uri):
         uris = get_unique_uris(seed_uri, 10)
-        #assert len(uris) == 10
+        # assert len(uris) == 10
 
     def test_extract_links(self, seed_request):
         assert seed_request.status_code == 200
+
+        links = extract_links(seed_request)
+        assert len(links) == 78

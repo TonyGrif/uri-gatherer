@@ -4,9 +4,11 @@ making HTTP requests and parsing the HTML responses.
 """
 
 
+import logging
 from typing import List
 
 import requests
+from bs4 import BeautifulSoup
 
 
 def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
@@ -25,6 +27,7 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     response = requests.get(seed_uri, timeout=time)
     # Ensure valid content type; If not ...
     links = extract_links(response)
+    logging.debug("%s links found on %s", len(links), seed_uri)
     # Check if ready to return (collection >= total)
     # If so return as list/dictionary
     # Else, pick random URI
@@ -42,10 +45,7 @@ def extract_links(response: requests.Response) -> List[str]:
     Returns:
         A list containing strings of unique URIs.
     """
-    # For each link
-    # Grab content/type header
-    # Disregard link if not text/html
-    # Check valid size
-    # Disregard if < 1000 bytes
+    soup = BeautifulSoup(response.content, "html.parser")
+    links = soup.find_all("a")
 
-    return []
+    return links
