@@ -25,16 +25,26 @@ def main():
     )
 
     parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_const",
+        dest="logging_level",
+        const=logging.INFO,
+        help="Output verbose info logs to console.",
+    )
+
+    parser.add_argument(
         "-d",
         "--debug",
-        action="store_true",
+        action="store_const",
+        dest="logging_level",
+        const=logging.DEBUG,
         help="Output all program debug logs to console.",
     )
 
     args = parser.parse_args()
 
-    if args.debug is True:
-        logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=args.logging_level)
 
     get_unique_uris(args.seed_uri, args.unique_count)
 
