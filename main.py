@@ -25,6 +25,15 @@ def main():
     )
 
     parser.add_argument(
+        "-T",
+        "--timeout",
+        nargs="?",
+        type=int,
+        default=5,
+        help="The time before a HTTP request times out.",
+    )
+
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_const",
