@@ -26,8 +26,8 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     """
     response = requests.get(seed_uri, timeout=time)
 
-    links = extract_links(response, time)
-    logging.debug("%s links found on %s", len(links), seed_uri)
+    links = list(set(extract_links(response, time)))
+    logging.debug("%s unique links found on %s", len(links), seed_uri)
     # Check if ready to return (collection >= total)
     # If so return as list/dictionary
     # Else, pick random URI
@@ -54,15 +54,17 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
         if _validate_link(link["href"], time) is True:
             links.append(link["href"])
 
-    return list(set(links))
+    return links
 
 
-def _validate_link(uri: str, time: int = 5) -> bool:
-    """Validate the URI has a valid text/html content type header.
+def _validate_link(uri: str, time: int = 5, length: int = 1000) -> bool:
+    """Validate the URI has a valid text/html content type header
+    and has a valid number of bytes.
 
     Parameters:
         uri (str): The URI to validate.
         time (int): The time before a HTTP request will timeout.
+        length (int): The desired number of bytes for a request to be valid.
 
     Returns:
         A boolean value signifying if it is a valid URI.
@@ -74,4 +76,10 @@ def _validate_link(uri: str, time: int = 5) -> bool:
 
     if "text/html" not in response.headers["Content-Type"]:
         return False
+    try:
+        if int(response.headers["Content-Length"]) < length:
+            return False
+    except KeyError:
+        return False
+
     return True

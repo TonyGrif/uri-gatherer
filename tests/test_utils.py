@@ -17,7 +17,7 @@ def seed_request(seed_uri):
 class TestUtils:
     def test_get_uris(self, seed_uri):
         uris = get_unique_uris(seed_uri, 50)
-        assert len(uris) == 59
+        assert len(uris) == 32
 
         uris = get_unique_uris("https://api.github.com", 5)
         assert len(uris) == 0
@@ -27,4 +27,4 @@ class TestUtils:
         assert "text/html" in seed_request.headers["Content-Type"]
 
         links = extract_links(seed_request)
-        assert len(links) == 59
+        assert len(links) == 34
