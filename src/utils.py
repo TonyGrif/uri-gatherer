@@ -25,8 +25,8 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
         A list containing strings of unique URIs.
     """
     response = requests.get(seed_uri, timeout=time)
-    # Ensure valid content type; If not ...
-    links = extract_links(response)
+
+    links = extract_links(response, time)
     logging.debug("%s links found on %s", len(links), seed_uri)
     # Check if ready to return (collection >= total)
     # If so return as list/dictionary
@@ -36,11 +36,13 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     return links
 
 
-def extract_links(response: requests.Response) -> List[str]:
-    """Extract the links from an HTTP request.
+def extract_links(response: requests.Response, time: int = 5) -> List[str]:
+    """Extract the links from an HTTP request. Only links containing
+    "text/html" content headers will be returned.
 
     Parameters:
         response (Response): A valid response object.
+        time (int): The time before a request will be ended.
 
     Returns:
         A list containing strings of unique URIs.
@@ -49,6 +51,27 @@ def extract_links(response: requests.Response) -> List[str]:
     links = []
 
     for link in soup.find_all("a"):
-        links.append(link["href"])
+        if _validate_link(link["href"], time) is True:
+            links.append(link["href"])
 
     return list(set(links))
+
+
+def _validate_link(uri: str, time: int = 5) -> bool:
+    """Validate the URI has a valid text/html content type header.
+
+    Parameters:
+        uri (str): The URI to validate.
+        time (int): The time before a HTTP request will timeout.
+
+    Returns:
+        A boolean value signifying if it is a valid URI.
+    """
+    try:
+        response = requests.get(uri, timeout=time, allow_redirects=True)
+    except Exception:
+        return False
+
+    if "text/html" not in response.headers["Content-Type"]:
+        return False
+    return True
