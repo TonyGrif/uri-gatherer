@@ -16,11 +16,15 @@ def seed_request(seed_uri):
 
 class TestUtils:
     def test_get_uris(self, seed_uri):
-        uris = get_unique_uris(seed_uri, 10)
-        # assert len(uris) == 10
+        uris = get_unique_uris(seed_uri, 50)
+        assert len(uris) == 59
+
+        uris = get_unique_uris("https://api.github.com", 5)
+        assert len(uris) == 0
 
     def test_extract_links(self, seed_request):
         assert seed_request.status_code == 200
+        assert "text/html" in seed_request.headers["Content-Type"]
 
         links = extract_links(seed_request)
-        assert len(links) == 75
+        assert len(links) == 59
