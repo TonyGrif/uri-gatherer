@@ -55,7 +55,9 @@ def main():
 
     logging.basicConfig(level=args.logging_level)
 
-    get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
+    uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
+
+    print(*uris, sep="\n")
 
 
 if __name__ == "__main__":
