@@ -31,15 +31,16 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     links = list(set(extract_links(response, time)))
     logging.debug("%s unique links found", len(links))
 
-    if len(links) >= total_uri:
-        return links
     if len(links) == 0:
         logging.debug("No links found on %s", seed_uri)
         return []
 
-    new_seed = random.choice(links)
-    links.remove(new_seed)  # Prevent duplicate requests
-    links.extend(get_unique_uris(new_seed, total_uri - len(links)))
+    while len(links) < total_uri:
+        new_seed = random.choice(links)
+        logging.debug("Searching for links on %s", new_seed)
+        links.remove(new_seed)  # Prevent duplicate requests
+        new_links = extract_links(requests.get(new_seed, timeout=time))
+        links.extend(list(set(new_links)))
 
     return links
 
