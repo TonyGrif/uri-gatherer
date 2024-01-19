@@ -17,7 +17,7 @@ def seed_request(seed_uri):
 class TestUtils:
     def test_get_uris(self, seed_uri):
         uris = get_unique_uris(seed_uri, 50)
-        assert len(uris) > 0
+        assert len(uris) >= 50
 
         uris = get_unique_uris("https://api.github.com", 5)
         assert len(uris) == 0
