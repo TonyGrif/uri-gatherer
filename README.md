@@ -7,7 +7,11 @@ TBW
 * [Pipenv](https://pipenv.pypa.io/en/latest/)
 
 ## Running Instructions
-TBW
+This program can be executed using `./main.py [URI]` where the URI is valid
+and contains link tags. The number of links this program will search for can be
+edited by supplying an integer value after the URI: `./main.py [URI] [number]`.
+All further command line arguments and flags can be found using 
+`./main.py --help`.
 
 ## Sample Execution
 TBW
