@@ -4,6 +4,7 @@
 
 import argparse
 import logging
+from datetime import datetime
 
 from src.utils import get_unique_uris
 
@@ -60,9 +61,14 @@ def main():
 
     uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
 
-    # TODO: Write to text file
-    print(*uris, sep="\n")
-    print(len(uris))
+    with open(
+        f"{datetime.now().strftime('%Y-%m-%d')}-uris.txt", "w", encoding="UTF-8"
+    ) as file:
+        for link in uris:
+            file.write(f"{link}\n")
+
+    # logging.info(*uris, sep="\n")
+    # print(len(uris))
 
 
 if __name__ == "__main__":
