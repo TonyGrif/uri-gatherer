@@ -5,6 +5,7 @@ making HTTP requests and parsing the HTML responses.
 
 
 import logging
+import random
 from typing import List
 
 import requests
@@ -13,7 +14,7 @@ from bs4 import BeautifulSoup
 
 def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     """Get the unique URIs from the seed URI and recursively search them
-    for more unique URIs until the upper bound has been hit or no more can
+    for more unique URIs until the upper threshold has been hit or no more can
     be found.
 
     Parameters:
@@ -24,14 +25,22 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     Returns:
         A list containing strings of unique URIs.
     """
+    logging.debug("Searching for %s links", total_uri)
     response = requests.get(seed_uri, timeout=time)
 
     links = list(set(extract_links(response, time)))
     logging.debug("%s unique links found on %s", len(links), seed_uri)
-    # Check if ready to return (collection >= total)
-    # If so return as list/dictionary
-    # Else, pick random URI
-    # Call function again with new seed
+
+    if len(links) >= total_uri:
+        return links
+    if len(links) == 0:
+        logging.debug("No links found on %s", seed_uri)
+        return []
+
+    new_seed = random.choice(links)
+    links.remove(new_seed)  # Prevent duplicate requests
+    logging.debug("New seed %s", new_seed)
+    links.extend(get_unique_uris(new_seed, total_uri - len(links)))
 
     return links
 
@@ -51,8 +60,11 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
     links = []
 
     for link in soup.find_all("a"):
-        if _validate_link(link["href"], time) is True:
-            links.append(link["href"])
+        try:
+            if _validate_link(link["href"], time) is True:
+                links.append(link["href"])
+        except KeyError:
+            pass
 
     return links
 
@@ -74,9 +86,9 @@ def _validate_link(uri: str, time: int = 5, length: int = 1000) -> bool:
     except Exception:
         return False
 
-    if "text/html" not in response.headers["Content-Type"]:
-        return False
     try:
+        if "text/html" not in response.headers["Content-Type"]:
+            return False
         if int(response.headers["Content-Length"]) < length:
             return False
     except KeyError:
