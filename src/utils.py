@@ -90,11 +90,12 @@ def _validate_link(uri: str, time: int = 5, length: int = 1000) -> bool:
         return False
 
     try:
-        if "text/html" not in response.headers["Content-Type"]:
-            return False
-        if int(response.headers["Content-Length"]) < length:
-            return False
+        content_type = response.headers["Content-Type"]
+        size_in_bytes = int(response.headers["Content-Length"])
     except KeyError:
+        return False
+
+    if "text/html" not in content_type or size_in_bytes < length:
         return False
 
     return True
