@@ -10,8 +10,20 @@ TBW
 This program can be executed using `./main.py [URI]` where the URI is valid
 and contains link tags. The number of links this program will search for can be
 edited by supplying an integer value after the URI: `./main.py [URI] [number]`.
-All further command line arguments and flags can be found using 
+All further command line arguments and flags can be found using
 `./main.py --help`.
 
 ## Sample Execution
-TBW
+When this program is run with the following arguments:
+`./main.py https://weiglemc.github.io/`
+
+A new file named `{date}-uris.txt` is created and the console output
+will be similar to:
+```
+https://www.odu.edu/facultydevelopment/women-in-stem#tab9=3&done1612907281342
+https://arxiv.org/abs/2308.05038
+https://twitter.com/weiglemc
+https://arxiv.org/abs/2401.04887
+https://weiglemc.github.io/contact/
+https://www.odu.edu/computer-science/academics/graduate/phd
+```
