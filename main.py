@@ -67,8 +67,8 @@ def main():
         for link in uris:
             file.write(f"{link}\n")
 
-    # logging.info(*uris, sep="\n")
-    # print(len(uris))
+            # Print to console
+            print(link)
 
 
 if __name__ == "__main__":
