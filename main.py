@@ -60,6 +60,7 @@ def main():
 
     uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
 
+    # TODO: Write to text file
     print(*uris, sep="\n")
     print(len(uris))
 
