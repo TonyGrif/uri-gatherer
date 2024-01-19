@@ -26,7 +26,8 @@ def main():
 
     parser.add_argument(
         "-T",
-        "--timeout",
+        metavar="timeout",
+        dest="timeout",
         nargs="?",
         type=int,
         default=5,
@@ -54,6 +55,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(level=args.logging_level)
+    # TODO: Optional flag to turn this back on
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)

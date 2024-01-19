@@ -25,11 +25,11 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
     Returns:
         A list containing strings of unique URIs.
     """
-    logging.debug("Searching for %s links", total_uri)
+    logging.debug("Searching for %s links on %s", total_uri, seed_uri)
     response = requests.get(seed_uri, timeout=time)
 
     links = list(set(extract_links(response, time)))
-    logging.debug("%s unique links found on %s", len(links), seed_uri)
+    logging.debug("%s unique links found", len(links))
 
     if len(links) >= total_uri:
         return links
@@ -39,7 +39,6 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
 
     new_seed = random.choice(links)
     links.remove(new_seed)  # Prevent duplicate requests
-    logging.debug("New seed %s", new_seed)
     links.extend(get_unique_uris(new_seed, total_uri - len(links)))
 
     return links
@@ -62,6 +61,7 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
     for link in soup.find_all("a"):
         try:
             if _validate_link(link["href"], time) is True:
+                logging.info("Link found: %s", link["href"])
                 links.append(link["href"])
         except KeyError:
             pass
