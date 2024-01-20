@@ -6,15 +6,15 @@ Python3 script to gather unique URIs from the links found within a seed URI.
 * [Pipenv](https://pipenv.pypa.io/en/latest/)
 
 ## Running Instructions
-This program can be executed using `./main.py [URI]` where the URI is valid
+This program can be executed using `./gather-uris.py [URI]` where the URI is valid
 and contains link tags. The number of links this program will search for can be
-edited by supplying an integer value after the URI: `./main.py [URI] [number]`.
+edited by supplying an integer value after the URI: `./gather-uris.py [URI] [number]`.
 All further command line arguments and flags can be found using
-`./main.py --help`.
+`./gather-uris.py --help`.
 
 ## Sample Execution
 When this program is run with the following arguments:
-`./main.py https://weiglemc.github.io/`
+`./gather-uris.py https://weiglemc.github.io/`
 
 A new file named `{date}-uris.txt` is created and the console output
 will be similar to:
