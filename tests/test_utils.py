@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from src.utils import extract_links, get_unique_uris
+from gatherer import extract_links, get_unique_uris
 
 
 @pytest.fixture

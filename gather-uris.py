@@ -6,7 +6,7 @@ import argparse
 import logging
 from datetime import datetime
 
-from src.utils import get_unique_uris
+from gatherer import get_unique_uris
 
 
 def main():
