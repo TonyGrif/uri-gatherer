@@ -1,9 +1,9 @@
 [project]
 name = "uri-gatherer"
 version = "0.1.0"
-description = "Add your description here"
+description = "A web crawler that recursively discovers and collects unique URIs from HTML pages"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "beautifulsoup4>=4.13.3",
     "requests>=2.32.3",
@@ -42,12 +42,12 @@ _imports = "ruff check --select I --fix ."
 _format = "ruff format ."
 format.sequence = ["_imports", "_format"]
 
-_type = "mypy billboard/"
+_type = "mypy gatherer/ gather-uris.py"
 _check = "ruff check ."
-_lint = "pylint billboard/"
+_lint = "pylint gatherer/ gather-uris.py"
 lint.sequence = ["_type", "_check", "_lint"]
 
-docs = "pdoc -t pdoc/ -o docs/ --docformat google billboard/"
+docs = "pdoc -t pdoc/ -o docs/ --docformat google gatherer/"
 
 [build-system]
 requires = ["hatchling"]

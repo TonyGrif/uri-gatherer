@@ -4,9 +4,8 @@ Python3 script to gather unique URIs from the links found within a seed URI.
 ## Requirements
 * [Python 3.10](https://www.python.org/)
 
-All further requirements can be downloaded by using [Pipenv](https://pipenv.pypa.io/en/latest/):
-`pipenv install` or through [pip](https://pip.pypa.io/en/stable/installation/):
-`pip install -r requirements.txt`.
+Dependencies are managed with [uv](https://docs.astral.sh/uv/):
+`uv sync`
 
 ## Running Instructions
 This program can be executed using `./gather-uris.py [URI]` where the URI is valid

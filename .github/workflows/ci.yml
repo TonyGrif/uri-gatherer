@@ -14,7 +14,6 @@ jobs:
         uv-version: ["0.6.0"]
         python-version:
           - "3.12"
-          - "3.13"
 
     runs-on: ${{ matrix.os }}
 
@@ -30,8 +29,8 @@ jobs:
       - name: Install Project
         run: uv sync --all-groups
 
-        # - name: Linting
-        # run: uv run poe lint
+      - name: Linting
+        run: uv run poe lint
 
       - name: Testing
         run: uv run poe test
