@@ -6,29 +6,28 @@ making HTTP requests and parsing the HTML responses.
 
 import logging
 import random
-from typing import List
 
 import requests
 from bs4 import BeautifulSoup
 
 
-def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
+def get_unique_uris(seed_uri: str, total_uri: int, timeout: int = 5) -> list[str]:
     """Get the unique URIs from the seed URI and recursively search them
     for more unique URIs until the upper threshold has been hit or no more can
     be found.
 
-    Parameters:
-        seed_uri (str): The starting URI to make requests on.
-        total_uri (int): The total number of unique URIs to search for.
-        time (int): The time before a HTTP request times out.
+    Args:
+        seed_uri: The starting URI to make requests on.
+        total_uri: The total number of unique URIs to search for.
+        timeout: The time in seconds before a HTTP request times out.
 
     Returns:
         A list containing strings of unique URIs.
     """
     logging.debug("Searching for %s links on %s", total_uri, seed_uri)
-    response = requests.get(seed_uri, timeout=time)
+    response = requests.get(seed_uri, timeout=timeout)
 
-    links = list(set(extract_links(response, time)))
+    links = list(set(extract_links(response, timeout)))
     logging.debug("%s unique links found", len(links))
 
     if len(links) == 0:
@@ -40,20 +39,20 @@ def get_unique_uris(seed_uri: str, total_uri: int, time: int = 5) -> List[str]:
         logging.debug("Searching for links on %s", new_seed)
         logging.debug("Looking for %s links", total_uri - len(links))
         links.remove(new_seed)  # Prevent duplicate requests
-        new_links = extract_links(requests.get(new_seed, timeout=time))
+        new_links = extract_links(requests.get(new_seed, timeout=timeout))
         links.extend(new_links)
         links = list(set(links))
 
     return links
 
 
-def extract_links(response: requests.Response, time: int = 5) -> List[str]:
+def extract_links(response: requests.Response, timeout: int = 5) -> list[str]:
     """Extract the links from an HTTP request. Only links containing
     "text/html" content headers will be returned.
 
-    Parameters:
-        response (Response): A valid response object.
-        time (int): The time before a request will be ended.
+    Args:
+        response: A valid response object.
+        timeout: The time in seconds before a request will time out.
 
     Returns:
         A list containing strings of unique URIs.
@@ -63,7 +62,7 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
 
     for link in soup.find_all("a"):
         try:
-            if _validate_link(link["href"], time) is True:
+            if _validate_link(link["href"], timeout) is True:
                 logging.info("Link found: %s", link["href"])
                 links.append(link["href"])
         except KeyError:
@@ -72,20 +71,20 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
     return links
 
 
-def _validate_link(uri: str, time: int = 5, length: int = 1000) -> bool:
+def _validate_link(uri: str, timeout: int = 5, length: int = 1000) -> bool:
     """Validate the URI has a valid text/html content type header
     and has a valid number of bytes.
 
-    Parameters:
-        uri (str): The URI to validate.
-        time (int): The time before a HTTP request will timeout.
-        length (int): The desired number of bytes for a request to be valid.
+    Args:
+        uri: The URI to validate.
+        timeout: The time in seconds before a HTTP request will time out.
+        length: The minimum number of bytes for a response to be valid.
 
     Returns:
         A boolean value signifying if it is a valid URI.
     """
     try:
-        response = requests.get(uri, timeout=time, allow_redirects=True)
+        response = requests.get(uri, timeout=timeout, allow_redirects=True)
     except requests.exceptions.RequestException as exc:
         logging.debug("Request failed for %s: %s", uri, exc)
         return False
