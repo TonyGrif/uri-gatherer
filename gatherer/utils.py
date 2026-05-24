@@ -1,5 +1,4 @@
-"""
-This module contains utility functions for
+"""This module contains utility functions for
 making HTTP requests and parsing the HTML responses.
 """
 

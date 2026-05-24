@@ -3,6 +3,7 @@
 import argparse
 import logging
 from datetime import datetime
+from pathlib import Path
 
 from gatherer import get_unique_uris
 
@@ -34,6 +35,16 @@ def main():
     )
 
     parser.add_argument(
+        "-o",
+        "--output",
+        metavar="directory",
+        dest="output_dir",
+        type=Path,
+        default=Path("."),
+        help="Directory to write the output file to (default: current directory).",
+    )
+
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_const",
@@ -58,9 +69,10 @@ def main():
 
     uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
 
-    with open(
-        f"{datetime.now().strftime('%Y-%m-%d')}-uris.txt", "w", encoding="UTF-8"
-    ) as file:
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = args.output_dir / f"{datetime.now().strftime('%Y-%m-%d')}-uris.txt"
+
+    with open(output_file, "w", encoding="UTF-8") as file:
         for link in uris:
             file.write(f"{link}\n")
             print(link)
