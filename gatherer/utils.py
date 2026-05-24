@@ -67,7 +67,7 @@ def extract_links(response: requests.Response, time: int = 5) -> List[str]:
                 logging.info("Link found: %s", link["href"])
                 links.append(link["href"])
         except KeyError:
-            pass
+            logging.debug("Skipping anchor with no href: %s", link)
 
     return links
 
