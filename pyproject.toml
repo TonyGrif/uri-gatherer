@@ -1,6 +1,6 @@
 [project]
 name = "uri-gatherer"
-version = "0.1.0"
+version = "1.0.0"
 description = "A web crawler that recursively discovers and collects unique URIs from HTML pages"
 readme = "README.md"
 requires-python = ">=3.10"
