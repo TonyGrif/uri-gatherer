@@ -1,0 +1,24 @@
+site_name: URI Gatherer
+site_description: A web crawler that recursively discovers and collects unique URIs from HTML pages
+repo_url: https://github.com/TonyGrif/uri-gatherer
+
+use_directory_urls: false
+
+theme:
+  name: material
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+
+markdown_extensions:
+  - pymdownx.snippets
+
+nav:
+  - Home: index.md
+  - API Reference: api.md
