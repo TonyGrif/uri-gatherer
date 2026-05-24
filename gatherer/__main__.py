@@ -30,7 +30,7 @@ def main():
         nargs="?",
         type=int,
         default=5,
-        help="The time before a HTTP request times out.",
+        help="The time before a HTTP request times out (default 5).",
     )
 
     parser.add_argument(

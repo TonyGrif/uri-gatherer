@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-gather-uris = "gatherer.__main__:main"
+uri-gatherer = "gatherer.__main__:main"
 
 [dependency-groups]
 dev = [
