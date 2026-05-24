@@ -35,11 +35,17 @@ docs = [
     "pdoc>=15.0.1",
 ]
 
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests that make live network requests",
+]
+
 [tool.ruff.lint]
 select = ["E", "F", "I"]
 
 [tool.poe.tasks]
-test = "pytest --cov --cov-report term-missing"
+test = "pytest --cov --cov-report term-missing -m 'not integration'"
+fulltest = "pytest --cov --cov-report term-missing"
 
 _imports = "ruff check --select I --fix ."
 _format = "ruff format ."

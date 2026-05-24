@@ -3,7 +3,6 @@ This module contains utility functions for
 making HTTP requests and parsing the HTML responses.
 """
 
-
 import logging
 import random
 
@@ -36,7 +35,7 @@ def get_unique_uris(seed_uri: str, total_uri: int, timeout: int = 5) -> list[str
             logging.debug("No links found on %s", seed_uri)
             return []
 
-        while len(links) < total_uri:
+        while links and len(links) < total_uri:
             new_seed = random.choice(links)
             logging.debug("Searching for links on %s", new_seed)
             logging.debug("Looking for %s links", total_uri - len(links))
@@ -69,7 +68,10 @@ def extract_links(
     soup = BeautifulSoup(response.content, "html.parser")
     links = []
 
-    with session or requests.Session() as s:
+    close_session = session is None
+    s = session if session is not None else requests.Session()
+
+    try:
         for link in soup.find_all("a"):
             try:
                 if _validate_link(link["href"], s, timeout) is True:
@@ -77,6 +79,9 @@ def extract_links(
                     links.append(link["href"])
             except KeyError:
                 logging.debug("Skipping anchor with no href: %s", link)
+    finally:
+        if close_session:
+            s.close()
 
     return links
 
