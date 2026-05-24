@@ -86,7 +86,8 @@ def _validate_link(uri: str, time: int = 5, length: int = 1000) -> bool:
     """
     try:
         response = requests.get(uri, timeout=time, allow_redirects=True)
-    except Exception:
+    except requests.exceptions.RequestException as exc:
+        logging.debug("Request failed for %s: %s", uri, exc)
         return False
 
     try:
