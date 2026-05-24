@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """Main module for the URI Gatherer."""
 
 import argparse
@@ -56,7 +54,6 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(level=args.logging_level)
-    # TODO: Optional flag to turn this back on
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     uris = get_unique_uris(args.seed_uri, args.unique_count, args.timeout)
@@ -66,8 +63,6 @@ def main():
     ) as file:
         for link in uris:
             file.write(f"{link}\n")
-
-            # Print to console
             print(link)
 
 

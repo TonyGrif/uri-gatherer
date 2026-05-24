@@ -9,6 +9,9 @@ dependencies = [
     "requests>=2.32.3",
 ]
 
+[project.scripts]
+gather-uris = "gatherer.__main__:main"
+
 [dependency-groups]
 dev = [
     "poethepoet>=0.32.2",
@@ -42,9 +45,9 @@ _imports = "ruff check --select I --fix ."
 _format = "ruff format ."
 format.sequence = ["_imports", "_format"]
 
-_type = "mypy gatherer/ gather-uris.py"
+_type = "mypy gatherer/"
 _check = "ruff check ."
-_lint = "pylint gatherer/ gather-uris.py"
+_lint = "pylint gatherer/"
 lint.sequence = ["_type", "_check", "_lint"]
 
 docs = "pdoc -t pdoc/ -o docs/ --docformat google gatherer/"
